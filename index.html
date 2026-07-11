@@ -329,19 +329,40 @@ function merge(incoming){
 function lsLoad(){ try{ const s = JSON.parse(localStorage.getItem(LS_KEY)); if (s && s.cells) state = s; }catch(e){} derive(); }
 function lsSave(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} }
 
-/* ---------- writes ---------- */
+/* ---------- writes ----------
+   ntfy.sh truncates/attaches bodies over ~4 KB, so NEVER post the whole
+   state: publish only the cells dirtied since the last successful send,
+   and re-seed the channel in small chunks. */
 let pubTimer = null;
+const dirty = new Set();
+async function postMsg(payload){
+  await fetch(`${NTFY}/${TOPIC}`, { method:"POST", body: JSON.stringify(payload) });
+}
 function publish(){
   clearTimeout(pubTimer);
   pubTimer = setTimeout(async () => {
+    const keys = [...dirty];
+    const payload = { cells:{}, resetAt: state.resetAt };
+    for (const k of keys) if (state.cells[k]) payload.cells[k] = state.cells[k];
     try {
-      await fetch(`${NTFY}/${TOPIC}`, { method:"POST", body: JSON.stringify(state) });
+      await postMsg(payload);
+      keys.forEach(k => dirty.delete(k));
       if (mode !== "live") { mode = "live"; render(); }
     } catch(e){ mode = "offline"; render(); }
   }, 350);
 }
+async function seedChannel(){
+  /* replay everything we hold, 12 cells per message to stay under the cap */
+  const keys = Object.keys(state.cells);
+  for (let i = 0; i < keys.length; i += 12){
+    const payload = { cells:{}, resetAt: state.resetAt };
+    for (const k of keys.slice(i, i+12)) payload.cells[k] = state.cells[k];
+    try { await postMsg(payload); } catch(e){ return; }
+  }
+}
 function setCell(key, val){
   state.cells[key] = { v: val, t: Date.now() };
+  dirty.add(key);
   derive(); lsSave(); publish();
 }
 const setField = (hn, key, val) => { setCell(`f.${hn}.${key}`, val); render(); };
@@ -351,7 +372,10 @@ function clearPin(holeN){ setCell(`pin.${holeN}`, null); render(); }
 function clearRound(){
   if (!confirm("Wipe this round from every device?")) return;
   state = { cells: {}, resetAt: Date.now() };
-  hole = 1; editing = null; derive(); lsSave(); publish(); render();
+  dirty.clear();
+  hole = 1; editing = null; derive(); lsSave();
+  postMsg({ cells:{}, resetAt: state.resetAt }).catch(()=>{});
+  render();
 }
 
 /* ---------- helpers ---------- */
@@ -444,12 +468,15 @@ function buildRoundJSON(){
   };
 }
 async function saveRound(){
+  /* the round data itself is already on the channel cell-by-cell; re-seed to
+     be safe, then drop a small "saved" marker Home Base can look for.
+     Clipboard + the textarea below carry the full JSON as backup. */
   const data = buildRoundJSON();
-  const env = { kind:"round_export", t: Date.now(), data };
   lastExport = JSON.stringify(data, null, 1);
   let sent = false;
   try {
-    await fetch(`${NTFY}/${TOPIC}`, { method:"POST", body: JSON.stringify(env) });
+    await seedChannel();
+    await postMsg({ kind:"round_saved", t: Date.now(), score: data.round.score });
     sent = true;
   } catch(e){}
   let copied = false;
@@ -459,7 +486,7 @@ async function saveRound(){
 }
 function saveOutHTML(sent, copied){
   const bits = [];
-  bits.push(sent ? "Published to the round channel — tell Home Base <b>pull my round</b>."
+  bits.push(sent ? "Round is on the channel — tell Home Base <b>pull my round</b>."
                  : "Channel unreachable — use the JSON below.");
   bits.push(copied ? "Copied to clipboard." : "Copy the JSON below.");
   return `<div class="msg">${bits.join("<br>")}</div>
@@ -855,7 +882,9 @@ render();
     es.onerror = () => { if (mode === "live"){ mode = "connecting"; render(); } };
   } catch(e){}
 
-  if (Object.keys(state.cells).length) publish();
+  /* if the relay's 12h cache rolled over, re-seed the channel (chunked)
+     from whatever this device holds */
+  if (Object.keys(state.cells).length) seedChannel();
 })();
 </script>
 </body>
