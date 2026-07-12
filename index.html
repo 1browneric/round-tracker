@@ -1213,16 +1213,15 @@ function viewOverview(){
     return `<tr><td class="hn">${h.n}</td><td>${h.par}</td>
       <td class="sc${cls}">${f.score ?? "&middot;"}</td>
       <td>${h.par===3 ? "&mdash;" : yn(effFir(h))}</td><td>${yn(effGir(h))}</td>
-      <td>${puttCount(h.n) ?? "&middot;"}</td><td>${f.pen || "&middot;"}</td>
-      <td>${SH(h.n).length || "&middot;"}</td></tr>`;
+      <td>${puttCount(h.n) ?? "&middot;"}</td><td>${f.pen || "&middot;"}</td></tr>`;
   }).join("");
   const sum = `<tr class="sumrow"><td colspan="2">TOT</td><td>${t.thru?t.score:"&middot;"}</td>
     <td>${t.fwP?`${t.fwH}/${t.fwP}`:"&middot;"}</td><td>${t.girP?`${t.girH}/${t.girP}`:"&middot;"}</td>
-    <td>${t.putts||"&middot;"}</td><td>${t.pen||"&middot;"}</td><td></td></tr>`;
+    <td>${t.putts||"&middot;"}</td><td>${t.pen||"&middot;"}</td></tr>`;
   return `${tiles}
   <div class="secthead">Hole by hole</div>
   <div class="gridwrap"><table class="grid">
-    <thead><tr><th>Hole</th><th>Par</th><th>Score</th><th>FIR</th><th>GIR</th><th>Putts</th><th>Pen</th><th>Shots</th></tr></thead>
+    <thead><tr><th>Hole</th><th>Par</th><th>Score</th><th>FIR</th><th>GIR</th><th>Putts</th><th>Pen</th></tr></thead>
     <tbody>${rows}${sum}</tbody>
   </table></div>
   <div class="rnotes"><textarea id="rnote" placeholder="Round notes (conditions, story of the day)">${esc(rnote)}</textarea></div>
