@@ -5,37 +5,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Round Tracker — Sunflower Hills</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Graduate&family=Barlow:wght@400;500;600;700&family=Spline+Sans+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Barlow:wght@400;500;600;700&family=Spline+Sans+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
+/* US Open / championship identity: deep navy, warm white, tournament red,
+   with a Masters-style serif (Playfair Display) for the marks. */
 :root{
-  --pine:#0E2418; --fair:#17402A; --fair2:#1D4E34;
-  --cream:#F5EFDD; --cream-dim:#D8D0B8;
-  --gold:#E3A812; --gold-deep:#B37F06;
-  --clay:#D06A45; --sage:#7E9C89; --line:rgba(245,239,221,.14);
+  --navy:#0C2340; --navy2:#14315A; --navy3:#1C426F;
+  --paper:#F7F4EA; --paper2:#ECE6D5;
+  --red:#A31621; --red2:#C22B33;
+  --blue:#1B4E8E; --gold:#C69A46; --gold-deep:#9E7524;
+  --sage:#9FB0C4; --line:rgba(255,255,255,.13);
   --target:#1668D9;
+  --serif:'Playfair Display',Georgia,serif;
   --mono:'Spline Sans Mono',ui-monospace,monospace;
+  /* aliases so existing rules resolve to the new championship palette */
+  --cream:#F7F4EA; --cream-dim:#D9D2C0;
+  --pine:#0C2340; --fair:#14315A; --fair2:#1C426F; --clay:#C22B33;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{background:var(--pine);color:var(--cream);font-family:'Barlow',sans-serif;-webkit-font-smoothing:antialiased}
+body{background:var(--navy);color:var(--paper);font-family:'Barlow',sans-serif;-webkit-font-smoothing:antialiased}
 .app{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;
-  background:radial-gradient(120% 60% at 50% -10%, #1B4A30 0%, var(--pine) 60%)}
+  background:radial-gradient(130% 55% at 50% -12%, #16386A 0%, var(--navy) 58%)}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-input,textarea{font-family:inherit}
+input,textarea,select{font-family:inherit}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 
-.masthead{padding:20px 18px 12px;text-align:center;border-bottom:1px solid var(--line)}
-.wordmark{font-family:'Graduate',serif;font-size:28px;line-height:1.1;letter-spacing:.04em;color:var(--cream);margin:2px 0 4px}
-.wordmark em{font-style:normal;color:var(--gold)}
-.sub{font-family:var(--mono);font-size:11px;color:var(--cream-dim);letter-spacing:.08em}
-.teerow{display:flex;justify-content:center;gap:8px;margin-top:9px}
-.teebtn{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
-  padding:6px 16px;border-radius:999px;border:1px solid var(--line);color:var(--sage)}
-.teebtn.on{color:var(--gold);border-color:rgba(227,168,18,.5)}
+.masthead{padding:22px 18px 14px;text-align:center;border-bottom:1px solid var(--line)}
+.crest{font-family:var(--mono);font-size:9px;letter-spacing:.42em;color:var(--gold);text-transform:uppercase;margin-bottom:7px}
+.wordmark{font-family:var(--serif);font-weight:800;font-size:31px;line-height:1.02;letter-spacing:.01em;color:var(--paper);margin:0 0 5px}
+.wordmark em{font-style:italic;color:var(--gold)}
+.rule{width:46px;height:2px;background:var(--gold);margin:0 auto 8px;opacity:.8}
+.sub{font-family:var(--mono);font-size:11px;color:var(--sage);letter-spacing:.06em}
 
 .tabs{display:flex;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;
-  background:rgba(14,36,24,.94);backdrop-filter:blur(6px)}
+  background:rgba(9,26,52,.94);backdrop-filter:blur(6px)}
 .tab{flex:1;padding:13px 0 11px;font-family:var(--mono);font-size:11px;letter-spacing:.22em;
   text-transform:uppercase;color:var(--sage);border-bottom:2px solid transparent}
 .tab.on{color:var(--gold);border-bottom-color:var(--gold)}
@@ -43,118 +48,114 @@ input,textarea{font-family:inherit}
 .main{flex:1;padding:16px 14px 90px}
 
 /* ---- hole stat card ---- */
-.holecard{background:var(--cream);color:#22301F;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-.holehead{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px dashed rgba(34,48,31,.25)}
-.holenum{font-family:'Graduate',serif;font-size:34px;line-height:1;color:#17402A}
-.holemeta{font-family:var(--mono);font-size:12px;color:#4B5B44;text-align:right;line-height:1.5}
-.holemeta b{color:#17402A}
-.scorerow{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(34,48,31,.12)}
-.scorelbl{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#4B5B44}
-.scorelbl .pm{display:block;font-size:13px;font-weight:700;color:#17402A;letter-spacing:.04em;margin-top:3px}
+.holecard{background:var(--cream);color:#16243A;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.holehead{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px dashed rgba(12,35,64,.25)}
+.holenum{font-family:var(--serif);font-size:34px;line-height:1;color:#0C2340}
+.holemeta{font-family:var(--mono);font-size:12px;color:#5C6B82;text-align:right;line-height:1.5}
+.holemeta b{color:#0C2340}
+.scorerow{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(12,35,64,.12)}
+.scorelbl{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#5C6B82}
+.scorelbl .pm{display:block;font-size:13px;font-weight:700;color:#0C2340;letter-spacing:.04em;margin-top:3px}
 .step{display:flex;align-items:center;gap:8px}
-.stepbtn{width:44px;height:44px;border-radius:12px;background:#17402A;color:var(--cream);
+.stepbtn{width:44px;height:44px;border-radius:12px;background:#0C2340;color:var(--cream);
   font-size:22px;font-weight:600;display:flex;align-items:center;justify-content:center}
 .stepbtn:active{transform:scale(.95)}
-.gross{width:52px;text-align:center;font-family:var(--mono);font-weight:700;font-size:28px;color:#22301F}
-.gross.blank{color:#9AA292}.gross.birdie{color:#B37F06}.gross.over{color:#B0432E}
+.gross{width:52px;text-align:center;font-family:var(--mono);font-weight:700;font-size:28px;color:#16243A}
+.gross.blank{color:#AAB2BE}.gross.birdie{color:#B37F06}.gross.over{color:#A31621}
 
-.statgrid{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid rgba(34,48,31,.12);flex-wrap:wrap}
+.statgrid{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid rgba(12,35,64,.12);flex-wrap:wrap}
 .stchip{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
-  padding:9px 14px;border-radius:999px;border:1.5px solid rgba(34,48,31,.3);color:#4B5B44}
-.stchip.yes{background:#17402A;border-color:#17402A;color:var(--gold);font-weight:700}
-.stchip.no{border-color:rgba(176,67,46,.55);color:#B0432E;font-weight:700}
+  padding:9px 14px;border-radius:999px;border:1.5px solid rgba(12,35,64,.3);color:#5C6B82}
+.stchip.yes{background:#0C2340;border-color:#0C2340;color:var(--gold);font-weight:700}
+.stchip.no{border-color:rgba(163,22,33,.55);color:#A31621;font-weight:700}
 .minstep{display:flex;align-items:center;gap:7px;margin-left:auto}
-.minstep .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#4B5B44}
-.stmini{width:36px;height:36px;border-radius:9px;background:#EDE6D0;color:#17402A;font-size:17px;
+.minstep .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#5C6B82}
+.stmini{width:36px;height:36px;border-radius:9px;background:#E7E0CE;color:#0C2340;font-size:17px;
   font-weight:700;display:flex;align-items:center;justify-content:center}
 .stmini:active{transform:scale(.94)}
-.minstep b{font-family:var(--mono);font-size:16px;color:#22301F;min-width:20px;text-align:center}
+.minstep b{font-family:var(--mono);font-size:16px;color:#16243A;min-width:20px;text-align:center}
 
-.puttrow{display:flex;align-items:center;gap:8px;padding:11px 16px;border-bottom:1px solid rgba(34,48,31,.12)}
+.puttrow{display:flex;align-items:center;gap:8px;padding:11px 16px;border-bottom:1px solid rgba(12,35,64,.12)}
 .puttfield{flex:1;display:flex;flex-direction:column;gap:4px}
-.puttfield label{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#4B5B44;text-align:center}
-.puttfield input{width:100%;padding:10px 4px;border:1.5px solid rgba(34,48,31,.25);border-radius:10px;
-  background:#fff;font-family:var(--mono);font-size:16px;font-weight:700;color:#22301F;text-align:center}
+.puttfield label{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#5C6B82;text-align:center}
+.puttfield input{width:100%;padding:10px 4px;border:1.5px solid rgba(12,35,64,.25);border-radius:10px;
+  background:#fff;font-family:var(--mono);font-size:16px;font-weight:700;color:#16243A;text-align:center}
 .puttfield input:focus{outline:2px solid var(--gold-deep)}
 .putttot{flex:none;display:flex;flex-direction:column;align-items:center;gap:4px}
-.putttot .lbl{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#4B5B44}
-.putttot b{font-family:var(--mono);font-size:22px;color:#17402A}
+.putttot .lbl{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#5C6B82}
+.putttot b{font-family:var(--mono);font-size:22px;color:#0C2340}
 
 /* shots */
 .shots{padding:6px 12px 10px}
-.shotrow{display:flex;align-items:center;gap:8px;padding:8px 4px;border-bottom:1px solid rgba(34,48,31,.1);font-family:var(--mono);font-size:12.5px;color:#22301F}
-.shotrow .n{font-family:'Graduate',serif;font-size:13px;color:#7E8A76;width:16px}
+.shotrow{display:flex;align-items:center;gap:8px;padding:8px 4px;border-bottom:1px solid rgba(12,35,64,.1);font-family:var(--mono);font-size:12.5px;color:#16243A}
+.shotrow .n{font-family:var(--serif);font-size:13px;color:#8792A4;width:16px}
 .shotrow .d{flex:1;line-height:1.5}
-.shotrow .d b{color:#17402A}
-.shotrow .d .acc-bad{color:#B0432E;font-weight:700}
+.shotrow .d b{color:#0C2340}
+.shotrow .d .acc-bad{color:#A31621;font-weight:700}
 .shotbtn{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-  padding:7px 10px;border-radius:8px;background:#EDE6D0;color:#17402A}
-.shotbtn.del{color:#B0432E;background:none;border:1px solid rgba(176,67,46,.35)}
-.addshot{display:block;width:calc(100% - 8px);margin:8px 4px 2px;padding:11px;border:1.5px dashed rgba(34,48,31,.35);
-  border-radius:10px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#17402A;font-weight:700}
-.scorehint{font-family:var(--mono);font-size:10.5px;color:#7E8A76;padding:2px 8px 8px;text-align:center}
-.scorehint b{color:#17402A}
+  padding:7px 10px;border-radius:8px;background:#E7E0CE;color:#0C2340}
+.shotbtn.del{color:#A31621;background:none;border:1px solid rgba(163,22,33,.35)}
+.addshot{display:block;width:calc(100% - 8px);margin:8px 4px 2px;padding:11px;border:1.5px dashed rgba(12,35,64,.35);
+  border-radius:10px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#0C2340;font-weight:700}
+.scorehint{font-family:var(--mono);font-size:10.5px;color:#8792A4;padding:2px 8px 8px;text-align:center}
+.scorehint b{color:#0C2340}
 
 /* shot editor */
-.editor{background:#EDE6D0;border-radius:12px;margin:8px 4px;padding:12px 10px}
+.editor{background:#E7E0CE;border-radius:12px;margin:8px 4px;padding:12px 10px}
 .edrow{display:flex;gap:8px}
 .edrow + .edrow{margin-top:10px}
 .edfield{flex:1;min-width:0}
-.edfield .edlbl{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#4B5B44;
+.edfield .edlbl{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#5C6B82;
   margin:0 0 5px;white-space:nowrap}
-.edfield input,.edfield select{width:100%;height:46px;padding:0 10px;border:1.5px solid rgba(34,48,31,.25);border-radius:10px;
-  background:#fff;font-family:var(--mono);font-size:15px;font-weight:700;color:#22301F;
+.edfield input,.edfield select{width:100%;height:46px;padding:0 10px;border:1.5px solid rgba(12,35,64,.25);border-radius:10px;
+  background:#fff;font-family:var(--mono);font-size:15px;font-weight:700;color:#16243A;
   -webkit-appearance:none;appearance:none}
 .edfield input{text-align:center}
-.edfield select:invalid,.edfield select option[value=""]{color:#9AA292}
+.edfield select:invalid,.edfield select option[value=""]{color:#AAB2BE}
 .edfield select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%234B5B44'/></svg>");
   background-repeat:no-repeat;background-position:right 12px center;padding-right:28px}
-.edhint{font-family:var(--mono);font-size:10px;color:#7E8A76;margin-top:7px;text-align:center;letter-spacing:.04em}
+.edhint{font-family:var(--mono);font-size:10px;color:#8792A4;margin-top:7px;text-align:center;letter-spacing:.04em}
 .edactions{display:flex;gap:8px;margin-top:12px}
-.edsave{flex:1;padding:12px;border-radius:10px;background:#17402A;color:var(--gold);
+.edsave{flex:1;padding:12px;border-radius:10px;background:#0C2340;color:var(--gold);
   font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700}
-.edcancel{flex:none;padding:12px 16px;border-radius:10px;border:1px solid rgba(34,48,31,.3);color:#4B5B44;
+.edcancel{flex:none;padding:12px 16px;border-radius:10px;border:1px solid rgba(12,35,64,.3);color:#5C6B82;
   font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
 
 /* per-hole tee override */
-.teeovrow{display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid rgba(34,48,31,.12)}
+.teeovrow{display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid rgba(12,35,64,.12)}
 .teechip{flex:1;font-family:var(--mono);font-size:10px;letter-spacing:.08em;padding:8px 4px;
-  border-radius:999px;border:1.5px solid rgba(34,48,31,.25);color:#4B5B44;text-align:center}
+  border-radius:999px;border:1.5px solid rgba(12,35,64,.25);color:#5C6B82;text-align:center}
 .teechip.on{font-weight:700;border-width:2px}
 .teechip.tee-blue.on{border-color:#2A5B9E;color:#2A5B9E;background:rgba(42,91,158,.08)}
-.teechip.tee-red.on{border-color:#B0432E;color:#B0432E;background:rgba(176,67,46,.08)}
+.teechip.tee-red.on{border-color:#A31621;color:#A31621;background:rgba(163,22,33,.08)}
 .teechip.tee-yellow.on{border-color:#B37F06;color:#B37F06;background:rgba(179,127,6,.1)}
 
 /* caddy card */
-.caddy{margin-top:14px;background:var(--cream);color:#22301F;border-radius:16px;
+.caddy{margin-top:14px;background:var(--cream);color:#16243A;border-radius:16px;
   padding:14px 12px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 .caddyhead{font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;
-  color:#4B5B44;margin-bottom:10px;text-align:center}
+  color:#5C6B82;margin-bottom:10px;text-align:center}
 .caddy .edrow + .edrow{margin-top:8px}
-.caddyask{display:block;width:100%;margin-top:10px;padding:13px;border-radius:10px;background:#17402A;
+.caddyask{display:block;width:100%;margin-top:10px;padding:13px;border-radius:10px;background:#0C2340;
   color:var(--gold);font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700}
-.caddyout{font-family:var(--mono);font-size:13px;color:#22301F;line-height:1.7;padding:10px 4px 0;text-align:center}
+.caddyout{font-family:var(--mono);font-size:13px;color:#16243A;line-height:1.7;padding:10px 4px 0;text-align:center}
 .caddyout:empty{display:none}
 
-/* strategy view */
-.strat{padding:4px 2px}
-.stratrow{font-family:var(--mono);font-size:12.5px;color:#22301F;line-height:1.6;
-  padding:9px 6px;border-bottom:1px solid rgba(34,48,31,.12)}
-.stratrow:last-child{border-bottom:none}
-.stratrow b{color:#17402A}
+/* strategy view (see .stratsec block below) */
+.strat{padding:2px 2px}
 
 .noterow{padding:10px 14px 14px}
-.noterow input{width:100%;padding:11px 12px;border:1.5px solid rgba(34,48,31,.2);border-radius:10px;
-  background:#fff;font-size:14px;color:#22301F}
-.noterow input::placeholder{color:#9AA292}
+.noterow input{width:100%;padding:11px 12px;border:1.5px solid rgba(12,35,64,.2);border-radius:10px;
+  background:#fff;font-size:14px;color:#16243A}
+.noterow input::placeholder{color:#AAB2BE}
 
 /* ---- course book ---- */
 .book{margin-top:14px;background:var(--cream);border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-.bookbar{display:flex;align-items:stretch;border-bottom:1px solid rgba(34,48,31,.15);background:#EDE6D0}
+.bookbar{display:flex;align-items:stretch;border-bottom:1px solid rgba(12,35,64,.15);background:#E7E0CE}
 .bookseg{flex:1;padding:12px 0 11px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;
-  text-transform:uppercase;color:#4B5B44;border-bottom:2px solid transparent}
-.bookseg.on{background:var(--cream);color:#17402A;font-weight:700;border-bottom-color:var(--gold)}
-.bookzoombtn{flex:none;width:52px;font-family:var(--mono);font-size:15px;color:#4B5B44;border-left:1px solid rgba(34,48,31,.15)}
+  text-transform:uppercase;color:#5C6B82;border-bottom:2px solid transparent}
+.bookseg.on{background:var(--cream);color:#0C2340;font-weight:700;border-bottom-color:var(--gold)}
+.bookzoombtn{flex:none;width:52px;font-family:var(--mono);font-size:15px;color:#5C6B82;border-left:1px solid rgba(12,35,64,.15)}
 .bookbody{padding:10px 10px 12px}
 .bookframe{position:relative;border-radius:10px;overflow:hidden;background:#fff}
 .bookimg{width:100%;display:block;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
@@ -165,15 +166,15 @@ input,textarea{font-family:inherit}
   border-radius:50%;pointer-events:none;box-shadow:0 0 0 1.5px rgba(255,255,255,.65) inset}
 .targetmark:after{content:"";position:absolute;left:50%;top:50%;width:4px;height:4px;margin:-2px 0 0 -2px;
   border-radius:50%;background:var(--target)}
-.bookhint{font-family:var(--mono);font-size:10.5px;color:#4B5B44;padding:9px 4px 0;line-height:1.6;text-align:center}
-.bookhint b{color:#17402A}
+.bookhint{font-family:var(--mono);font-size:10.5px;color:#5C6B82;padding:9px 4px 0;line-height:1.6;text-align:center}
+.bookhint b{color:#0C2340}
 .bookhint .pinlgnd{color:var(--gold-deep);font-weight:700}
 .bookhint .tgtlgnd{color:var(--target);font-weight:700}
-.pinclear{display:block;margin:8px auto 0;padding:7px 16px;border:1px solid rgba(176,67,46,.45);border-radius:999px;
-  color:#B0432E;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase}
+.pinclear{display:block;margin:8px auto 0;padding:7px 16px;border:1px solid rgba(163,22,33,.45);border-radius:999px;
+  color:#A31621;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase}
 
 /* fullscreen zoom overlay */
-.zoom{position:fixed;inset:0;z-index:50;background:rgba(10,24,16,.97);display:flex;flex-direction:column;
+.zoom{position:fixed;inset:0;z-index:50;background:rgba(7,20,42,.97);display:flex;flex-direction:column;
   max-width:520px;margin:0 auto}
 .zoomhead{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;flex:none}
 .zoomttl{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--sage)}
@@ -194,21 +195,21 @@ input,textarea{font-family:inherit}
 .totcard{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);
   border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:16px}
 .tot{background:var(--fair2);padding:13px 8px;text-align:center}
-.tot .v{font-family:'Graduate',serif;font-size:22px;color:var(--cream)}
+.tot .v{font-family:var(--serif);font-size:22px;color:var(--cream)}
 .tot .v em{font-style:normal;color:var(--gold);font-size:15px}
 .tot .k{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--sage);margin-top:4px}
 .secthead{font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--sage);margin:20px 0 10px}
 .gridwrap{overflow-x:auto;background:var(--cream);border-radius:14px;padding:6px 4px}
-.grid{border-collapse:collapse;font-family:var(--mono);font-size:12px;color:#22301F;min-width:100%}
-.grid th{font-size:9px;letter-spacing:.14em;color:#4B5B44;padding:6px 5px;text-transform:uppercase;
-  border-bottom:1.5px solid #17402A;text-align:center;font-weight:600}
-.grid td{padding:6px 5px;text-align:center;border-bottom:1px solid rgba(34,48,31,.14)}
-.grid td.hn{font-weight:700;color:#17402A}
-.grid tr.sumrow td{border-top:2px solid #17402A;font-weight:700;color:#17402A}
+.grid{border-collapse:collapse;font-family:var(--mono);font-size:12px;color:#16243A;min-width:100%}
+.grid th{font-size:9px;letter-spacing:.14em;color:#5C6B82;padding:6px 5px;text-transform:uppercase;
+  border-bottom:1.5px solid #0C2340;text-align:center;font-weight:600}
+.grid td{padding:6px 5px;text-align:center;border-bottom:1px solid rgba(12,35,64,.14)}
+.grid td.hn{font-weight:700;color:#0C2340}
+.grid tr.sumrow td{border-top:2px solid #0C2340;font-weight:700;color:#0C2340}
 .sc{font-weight:700}
-.sc.bird{color:#B37F06}.sc.bog{color:#B0432E}
-.ok{color:#17402A;font-weight:700}
-.miss{color:#B0432E}
+.sc.bird{color:#B37F06}.sc.bog{color:#A31621}
+.ok{color:#0C2340;font-weight:700}
+.miss{color:#A31621}
 .legend{font-family:var(--mono);font-size:10.5px;color:var(--sage);margin-top:10px;line-height:1.7}
 
 .rnotes{margin-top:16px}
@@ -223,7 +224,7 @@ input,textarea{font-family:inherit}
 .saveout .msg{font-family:var(--mono);font-size:11px;color:var(--sage);text-align:center;line-height:1.7;margin-bottom:8px}
 .saveout .msg b{color:var(--gold)}
 .saveout textarea{width:100%;min-height:120px;padding:10px;border:1px solid var(--line);border-radius:12px;
-  background:#0A1810;color:var(--cream-dim);font-family:var(--mono);font-size:10px;resize:vertical}
+  background:#08182F;color:var(--cream-dim);font-family:var(--mono);font-size:10px;resize:vertical}
 .mailbtn{display:block;text-align:center;margin:0 0 10px;padding:12px;border:1px solid var(--line);
   border-radius:12px;color:var(--cream);font-family:var(--mono);font-size:11px;letter-spacing:.2em;
   text-transform:uppercase;text-decoration:none;background:var(--fair2)}
@@ -231,17 +232,74 @@ input,textarea{font-family:inherit}
   border-radius:12px;color:var(--clay);font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase}
 .savestat{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);
   font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;
-  color:var(--sage);background:rgba(14,36,24,.9);padding:6px 14px;border-radius:999px;border:1px solid var(--line);z-index:20}
-.savestat.live{color:var(--gold);border-color:rgba(227,168,18,.4)}
+  color:var(--sage);background:rgba(9,26,52,.9);padding:6px 14px;border-radius:999px;border:1px solid var(--line);z-index:20}
+.savestat.live{color:var(--gold);border-color:rgba(198,154,70,.5)}
+
+/* section labels inside the hole card */
+.seclbl{font-family:var(--mono);font-size:9px;letter-spacing:.26em;text-transform:uppercase;
+  color:#8792A4;padding:12px 16px 2px}
+
+/* hole nav (top + bottom) with hole numbers */
+.holenav{display:flex;align-items:center;gap:10px}
+.holenav.top{margin-bottom:12px}
+.holenav.bottom{margin-top:16px}
+.holenav .navbtn{flex:1;padding:13px 0;border-radius:11px;background:var(--navy3);color:var(--paper);
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--line);text-align:center}
+.holenav .navbtn.dis{opacity:.4}
+.navnow{flex:none;font-family:var(--serif);font-weight:700;font-size:17px;color:var(--gold);min-width:60px;text-align:center}
+
+/* auto tag on FIR/GIR chips */
+.autotag{font-size:8px;letter-spacing:.14em;margin-left:5px;opacity:.7;vertical-align:middle}
+
+/* confirm-score row */
+.confirmrow{padding:10px 14px 4px}
+.confirmscore{width:100%;padding:12px;border-radius:11px;background:#0C2340;color:var(--gold);
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.confirmscore.warn{background:#fff;color:#A31621;border:1.5px solid rgba(163,22,33,.5)}
+.confirmscore b{font-size:13px}
+.confirmok{text-align:center;font-family:var(--mono);font-size:10.5px;color:#5C6B82;padding:4px}
+
+/* caddy sub-tabs */
+.caddytabs{display:flex;gap:6px;margin-bottom:12px}
+.caddytab{flex:1;padding:9px 4px;border-radius:9px;border:1.5px solid rgba(12,35,64,.2);
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:#5C6B82}
+.caddytab.on{background:#0C2340;border-color:#0C2340;color:var(--gold);font-weight:700}
+.chart{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px;color:#16243A}
+.chart th{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#5C6B82;font-weight:600;
+  padding:6px 4px;border-bottom:1.5px solid #0C2340;text-align:center}
+.chart th:first-child{text-align:left}
+.chart td{padding:7px 4px;text-align:center;border-bottom:1px solid rgba(12,35,64,.1)}
+.chart td.cl{text-align:left;font-weight:700;color:#0C2340}
+.chart td.mut{color:#8792A4}
+.chartnote{font-family:var(--mono);font-size:10px;color:#5C6B82;line-height:1.6;padding:9px 2px 0;text-align:center}
+.windsub{display:flex;gap:6px;margin-bottom:10px}
+.windbtn{flex:1;padding:8px 4px;border-radius:8px;border:1.5px solid rgba(12,35,64,.2);
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#5C6B82}
+.windbtn.on{background:#14315A;border-color:#14315A;color:#fff;font-weight:700}
+
+/* strategy sections */
+.stratsec{padding:10px 6px;border-bottom:1px solid rgba(12,35,64,.12)}
+.stratsec:last-child{border-bottom:none}
+.stratlbl{font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:#8792A4;margin-bottom:6px}
+.stratrow{font-family:'Barlow',sans-serif;font-size:13.5px;color:#16243A;line-height:1.5;padding:3px 0}
+.stratrow b{color:#0C2340;font-weight:700}
+.stratrow.warn{color:#A31621}
+.stratrow.warn b{color:#A31621}
+.stratrow.muted{color:#8792A4}
+.pintip{font-family:'Barlow',sans-serif;font-size:12.5px;color:#16243A;line-height:1.5;
+  background:#E7EEF6;border-left:3px solid var(--target);border-radius:8px;padding:9px 11px;margin-top:9px}
+.pintip b{color:#0C2340}
 </style>
 </head>
 <body>
 <div class="app">
   <header class="masthead">
+    <div class="crest">Tournament Round</div>
     <h1 class="wordmark">Round <em>Tracker</em></h1>
+    <div class="rule"></div>
     <div class="sub">Sunflower Hills &middot; Bonner Springs, KS</div>
     <div class="sub">Saturday, July 12, 2026</div>
-    <div class="teerow" id="teerow"></div>
   </header>
   <nav class="tabs" role="tablist">
     <button class="tab on" data-tab="hole" role="tab">Hole</button>
@@ -355,6 +413,31 @@ const TYPES = ["Drive","Long App (176+)","Mid App (101-175)","Short App (100&In)
 const ACCS  = ["Good","Right","Left","Short","Long","Water","Sand","OB","Unplayable"];
 const BAD_ACC = new Set(["Water","OB","Unplayable"]);
 
+/* ---- per-hole tour-caddy intel (read off the Par The Course books) ----
+   tee = the PTC recommended play + any warning; avoid = where the strokes are;
+   note = attack/bail decision. green slope is sampled live from the map. */
+const HOLE_INTEL = {
+  1:{tee:"PTC plan: Driver, ~140 in.", avoid:"Bunkers scatter right off the tee; water sits short-left of the green.", note:"Miss right of the green, never long-left. Green runs off the front."},
+  2:{tee:"Driver then a wedge — reachable in two only if you flush it.", avoid:"Bunkers both sides; water long-left of the green.", note:"Big green tilts hard back-right to left — stay below the shelf."},
+  3:{tee:"Driver, ~138 in.", avoid:"Bunker complex right; water off the tee bottom-left.", note:"Center green — the front-left is the low side."},
+  4:{tee:"One club, PTC: 9i. Par 3.", avoid:"Water runs the ENTIRE right side. Bunkers left are the safe miss.", note:"Miss left, never right. Green sits above its front."},
+  5:{tee:"Short par 4, downwind — Driver then wedge (~76 in).", avoid:"Fairway bunkers pinch the landing.", note:"Aggressive line rewarded, but commit — small green, favor low front-left."},
+  6:{tee:"HCP 1, the hardest hole. Three-shot it: Driver, 9i, 56°.", avoid:"Bunkers everywhere both sides; water long-left. Take your medicine.", note:"Par is a win here — don't force the second."},
+  7:{tee:"Mini Driver off the tee, NOT Driver — too tight for the big stick.", avoid:"Bunkers pinch both sides of the landing zone.", note:"Position over power; 9i in from the short grass."},
+  8:{tee:"Long par 3, PTC: 6i (~196).", avoid:"Bunkers left and right; sand short-right is the worst miss.", note:"Center of the green — anywhere but short-right."},
+  9:{tee:"Short par 4 — LAY BACK with a 4i. Driver brings the trouble in.", avoid:"Bunkers pinch the driver landing zone.", note:"4i then a wedge (~85 in) takes the big number out of play."},
+  10:{tee:"Easiest hole (HCP 18) — Driver then a wedge (~46 in).", avoid:"Water right near the green; bunker left.", note:"Attack. Pin sits up back-left — be below it."},
+  11:{tee:"Driver, mid-iron in (8i, ~161).", avoid:"Scattered bunkers; sand/water bottom-left.", note:"Straightaway — take on the second from the fairway."},
+  12:{tee:"Driver, wedge in (Aw, ~123).", avoid:"Long and straight, bunkers both sides.", note:"The fairway is the whole game — center green."},
+  13:{tee:"Par 3 over water, PTC: 9i (~162). CARRY IT.", avoid:"Pond short and left — short is wet.", note:"Take enough club; miss long, never short."},
+  14:{tee:"Driver, wedge in (9i, ~135).", avoid:"Water down the ENTIRE left side. Miss right.", note:"Green sits tight to the water — bail right of the flag."},
+  15:{tee:"HCP 2, long par 4. Driver + 7i, or lay up 7w/8i/56°.", avoid:"Water bottom-left; bunkers guard the fairway.", note:"Long hole — bogey is fine; play the fat side."},
+  16:{tee:"Long par 3, PTC: 7i (~195).", avoid:"Water all down the right; bunkers left, sand short-right.", note:"Miss left, never right. Big club, smooth swing."},
+  17:{tee:"Par 5 — Driver, 4i, 56°, or Mini Driver / 7w. Position first.", avoid:"Water left of the landing and crossing; bunkers.", note:"Find the fairway — the green gives up birdies."},
+  18:{tee:"Short finish — Driver then a wedge (~62 in).", avoid:"Pond guards the left-front of the green; bunkers right.", note:"Favor the right side, wedge in — don't flirt with the water."}
+};
+const GREEN_SLOPES = {"1":{"high":"back","low":"front"},"2":{"high":"back right","low":"left"},"3":{"high":"back","low":"front left"},"4":{"high":"back left","low":"front"},"5":{"high":"back right","low":"front left"},"6":{"high":"back left","low":"mid"},"7":{"high":"back left","low":"right"},"8":{"high":"back","low":"front"},"9":{"high":"back","low":"front"},"10":{"high":"back","low":"front"},"11":{"high":"back","low":"front"},"12":{"high":"back","low":"front"},"13":{"high":"back","low":"front right"},"14":{"high":"back","low":"front"},"15":{"high":"back","low":"front"},"16":{"high":"back","low":"front right"},"17":{"high":"back","low":"front"},"18":{"high":"back","low":"front"}};
+
 /* ---------- state ----------
    Same cell contract as the sunday-game app: state = {cells:{key:{v,t}}, resetAt},
    last-write-wins per cell, relayed via ntfy + localStorage. Solo namespaces:
@@ -378,6 +461,8 @@ let editing = null;      // null | {idx, draft:{...}}  idx===-1 -> new shot
 let mode = "connecting";
 let lastExport = null;
 let caddyIn = { dist:null, cap:null, mph:null, dir:"calm", out:"" };
+let caddyTab = "swing";     // swing | dist | wind
+let windTab = "into";       // into | down  (inside the Wind chart)
 
 const isPinKey = k => k.startsWith("pin.");
 const validPinVal = v => v === null ||
@@ -495,6 +580,23 @@ function puttCount(hn){
   const n = [f.p1, f.p2, f.p3].filter(v => v != null).length;
   return n || null;
 }
+/* FIR/GIR auto-derived from the shots; a tap on the chip cycles
+   auto -> Y -> N -> auto (manual override stored in f.fir/f.gir). */
+function autoFir(h){
+  if (h.par === 3) return null;
+  const sh = SH(h.n);
+  if (sh.length >= 2) return sh[1].lie === "Fairway" ? "Y" : "N";
+  if (sh[0] && BAD_ACC.has(sh[0].acc)) return "N";
+  return null;
+}
+function autoGir(h){
+  const sh = SH(h.n);
+  const idx = sh.findIndex(s => s.da == null);   // first shot that finished on the green
+  if (idx < 0) return null;
+  return (idx + 1) <= (h.par - 2) ? "Y" : "N";
+}
+const effFir = h => { const v = F(h.n).fir; return v ? v : autoFir(h); };
+const effGir = h => { const v = F(h.n).gir; return v ? v : autoGir(h); };
 function shotSum(hn){
   const p = puttCount(hn) || 0, pen = F(hn).pen || 0;
   const s = SH(hn).length;
@@ -513,13 +615,14 @@ function totals(){
     if (f.score == null) continue;
     thru++; score += f.score; par += h.par;
     if (h.n <= 9) f9 += f.score; else b9 += f.score;
-    if (h.par !== 3 && (f.fir === "Y" || f.fir === "N")){ fwP++; if (f.fir === "Y") fwH++; }
-    if (f.gir === "Y" || f.gir === "N"){ girP++; if (f.gir === "Y") girH++; }
+    const fir = effFir(h), gir = effGir(h);
+    if (h.par !== 3 && (fir === "Y" || fir === "N")){ fwP++; if (fir === "Y") fwH++; }
+    if (gir === "Y" || gir === "N"){ girP++; if (gir === "Y") girH++; }
     putts += puttCount(h.n) || 0;
     pen += f.pen || 0;
     /* up & down, auto-derived: missed GIR, last non-putt shot from <=50y,
        holed out with <=1 putt at par or better */
-    if (f.gir === "N"){
+    if (gir === "N"){
       const sh = SH(h.n);
       const last = sh[sh.length - 1];
       if (last && last.db != null && last.db <= 50){
@@ -551,8 +654,8 @@ function buildRoundJSON(){
       putts_tm: puttCount(h.n) ?? 0,
       score: f.score ?? null,
       plus_minus: plusMinus(f.score, h.par),
-      fir: h.par === 3 ? null : (f.fir ?? null),
-      gir: f.gir ?? null,
+      fir: h.par === 3 ? null : effFir(h),
+      gir: effGir(h),
       penalty: f.pen || 0,
       notes: f.note || ""
     };
@@ -607,15 +710,23 @@ async function saveRound(){
   try { await navigator.clipboard.writeText(lastExport); copied = true; } catch(e){}
   const el = document.querySelector("#saveout");
   if (el) el.innerHTML = saveOutHTML(sent, copied, data);
+  /* auto-open the mail app with the full breakdown pre-filled so a copy
+     always reaches Eric's inbox — he just taps Send */
+  const mailto = mailtoFor(data);
+  if (mailto){ try { window.location.href = mailto; } catch(e){} }
+}
+function mailtoFor(data){
+  if (!data) return "";
+  return `mailto:${EMAIL}?subject=${encodeURIComponent(
+    `Round Tracker - ${ROUND.course} ${ROUND.date}`)}&body=${encodeURIComponent(breakdownText(data))}`;
 }
 function saveOutHTML(sent, copied, data){
   const bits = [];
   bits.push(sent ? "Round is on the channel — tell Home Base <b>pull my round</b> (it emails you the full copy)."
                  : "Channel unreachable — use the JSON below.");
-  bits.push(copied ? "Full JSON copied to clipboard." : "Copy the JSON below.");
-  const mailto = data ? `mailto:${EMAIL}?subject=${encodeURIComponent(
-      `Round Tracker - ${ROUND.course} ${ROUND.date}`)}&body=${encodeURIComponent(
-      breakdownText(data))}` : "";
+  bits.push("Your mail app should open with the full shot-by-shot breakdown — just hit Send.");
+  bits.push(copied ? "Full JSON also copied to clipboard." : "Copy the JSON below.");
+  const mailto = mailtoFor(data);
   return `<div class="msg">${bits.join("<br>")}</div>
     ${mailto ? `<a class="mailbtn" href="${mailto}">Email me a copy</a>` : ""}
     <textarea readonly onclick="this.select()">${lastExport ? lastExport.replace(/&/g,"&amp;").replace(/</g,"&lt;") : ""}</textarea>`;
@@ -713,34 +824,85 @@ function clubFor(dist){
 const fmtClub = c => `${c} ${CADDY[c].c[0]} (${CADDY[c].c[1]})`;
 function strategyFor(h){
   const yds = holeYds(h);
+  const intel = HOLE_INTEL[h.n] || {};
+  const slope = GREEN_SLOPES[h.n];
+  const secs = [];
+  const sec = (label, body) => secs.push(`<div class="stratsec"><div class="stratlbl">${label}</div>${body}</div>`);
+
+  // TEE / how to play it — real intel first, then the club math
   const rows = [];
+  if (intel.tee) rows.push(intel.tee);
   if (h.par === 3){
-    const c = clubFor(yds);
-    rows.push(`One swing: <b>${fmtClub(c)}</b> for ${yds}.`);
-    rows.push(`Check GREEN for today's pin - the blue ring is the fat-side target.`);
+    rows.push(`Your number: <b>${fmtClub(clubFor(yds))}</b> for ${yds}.`);
   } else {
-    const opts = [["D","Driver"],["MD","Mini Driver"],["3H","3H"]];
-    let bestOpt = null;
-    for (const [code,name] of opts){
+    for (const [code,name] of [["D","Driver"],["MD","Mini Driver"],["3H","3H"]]){
       const leave = yds - CADDY[code].c[1];
       if (leave < 30) continue;
-      const app = clubFor(leave);
       const sweet = leave >= 95 && leave <= 140;
-      rows.push(`${name} ${CADDY[code].c[1]} out &rarr; ${leave} in: <b>${fmtClub(app)}</b>${sweet ? " &middot; wedge window" : ""}`);
-      if (sweet && !bestOpt) bestOpt = name;
+      rows.push(`${name} &rarr; ${leave} in: <b>${fmtClub(clubFor(leave))}</b>${sweet ? " &middot; wedge window" : ""}`);
     }
     if (h.par === 5){
       const afterD = yds - CADDY.D.c[1];
-      if (afterD <= 245 && afterD >= 150){
-        rows.push(`Reachable: after Driver, <b>${fmtClub(clubFor(afterD))}</b> gets home.`);
-      } else if (afterD > 245){
-        const lay = afterD - 114;  // leave a full 52
-        rows.push(`Three good ones: layup second to ~114 (<b>52</b>) &mdash; move it ${Math.max(0, Math.round(afterD-114))} with ${fmtClub(clubFor(afterD-114))}.`);
+      if (afterD > 245){
+        rows.push(`Layup 2nd to ~114 for a full <b>52</b>, or send <b>${fmtClub(clubFor(afterD))}</b> if you're feeling it.`);
       }
     }
-    rows.push(`HDCP ${h.si}${h.si<=6?" - hard hole, center of the green is a win":""}.`);
   }
-  return `<div class="strat">${rows.map(r=>`<div class="stratrow">${r}</div>`).join("")}</div>`;
+  sec("How to play it", rows.map(r=>`<div class="stratrow">${r}</div>`).join(""));
+
+  if (intel.avoid) sec("Where the strokes go", `<div class="stratrow warn">${intel.avoid}</div>`);
+  if (intel.note)  sec("The call", `<div class="stratrow">${intel.note}</div>`);
+  if (slope) sec("The green", `<div class="stratrow">High side: <b>${slope.high}</b> &middot; low side: <b>${slope.low}</b>. Everything feeds toward the low side.</div>`);
+
+  // live: if a pin is dropped, fold in the read
+  const pinTip = pins[h.n] ? pinAdvice(h.n) : null;
+  if (pinTip) sec("Today's pin", `<div class="stratrow">${pinTip}</div>`);
+  else sec("Today's pin", `<div class="stratrow muted">Drop the pin on the GREEN tab for a putt read here.</div>`);
+
+  return `<div class="strat">${secs.join("")}</div>`;
+}
+
+/* ---------- green pin read: sample the elevation heatmap at the pin ---------- */
+const _greenImgCache = {};
+function sampleGreen(holeN, x, y){
+  const meta = BOOK[holeN];
+  if (!meta) return null;
+  let c = _greenImgCache[holeN];
+  if (!c){
+    const img = _greenImgCache["_img_"+holeN];
+    if (!img || !img.complete || !img.naturalWidth) return null;
+    const cv = document.createElement("canvas");
+    cv.width = img.naturalWidth; cv.height = img.naturalHeight;
+    const ctx = cv.getContext("2d", { willReadFrequently:true });
+    ctx.drawImage(img, 0, 0);
+    c = _greenImgCache[holeN] = ctx;
+  }
+  try {
+    const W = c.canvas.width, H = c.canvas.height;
+    let r=0,g=0,b=0,n=0, rad=Math.max(3, Math.round(W*0.03));
+    const px = Math.round(x*W), py = Math.round(y*H);
+    const d = c.getImageData(Math.max(0,px-rad), Math.max(0,py-rad), rad*2, rad*2).data;
+    for (let i=0;i<d.length;i+=4){ if (d[i+3]<10) continue; r+=d[i];g+=d[i+1];b+=d[i+2];n++; }
+    if (!n) return null;
+    return { r:r/n, g:g/n, b:b/n };
+  } catch(e){ return null; }
+}
+function pinAdvice(holeN){
+  const p = pins[holeN];
+  const col = sampleGreen(holeN, p.x, p.y);
+  const front = p.y > 0.60, back = p.y < 0.40;
+  const parts = [];
+  if (col){
+    const high = col.r > col.b + 22 && col.r > 140;
+    const low  = col.b > col.r + 18 && col.b > 130;
+    if (high) parts.push("Pin's on the <b>high shelf</b> — downhill, slick putts. Leave your approach <b>below the hole</b> and lag the first one.");
+    else if (low) parts.push("Pin sits <b>low</b> — uphill putt, be firm and take the break out.");
+    else parts.push("Pin's on a <b>flatter section</b> — a makeable look if you're on the right tier.");
+  }
+  if (back) parts.push("Back pin: take one more club, don't short-side yourself.");
+  else if (front) parts.push("Front pin: spin it or land it soft — long leaves a downhill comeback.");
+  parts.push("Blue ring = the fat-side target; play there, not at the flag.");
+  return parts.join(" ");
 }
 
 /* ---------- suggested target: pin pulled 45% toward green centroid ---------- */
@@ -761,8 +923,6 @@ function scoreClass(g, par){
 
 function render(){
   document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on", b.dataset.tab===tab));
-  $("#teerow").innerHTML = TEES.map(x =>
-    `<button class="teebtn ${x===tee?"on":""}" data-tee="${x}">${x} tees</button>`).join("");
   const main = $("#main");
   main.innerHTML = tab==="hole" ? viewHole() : viewOverview();
   const zoomEl = $("#zoomroot");
@@ -825,11 +985,14 @@ function viewHole(){
   const pc = puttCount(h.n);
   const sum = shotSum(h.n);
 
+  // FIR/GIR chips now show the auto-derived value; a small tag marks it auto
   const chip = (key, lbl) => {
-    const v = f[key];
+    const manual = f[key];
+    const v = manual ? manual : (key === "fir" ? autoFir(h) : autoGir(h));
     const cls = v === "Y" ? " yes" : v === "N" ? " no" : "";
-    const txt = v === "Y" ? `${lbl} &#10003;` : v === "N" ? `${lbl} &#10007;` : lbl;
-    return `<button class="stchip${cls}" data-act="tri" data-key="${key}">${txt}</button>`;
+    const mark = v === "Y" ? " &#10003;" : v === "N" ? " &#10007;" : "";
+    const tag = (v && !manual) ? `<span class="autotag">auto</span>` : "";
+    return `<button class="stchip${cls}" data-act="tri" data-key="${key}">${lbl}${mark}${tag}</button>`;
   };
   const shotRows = sh.map((s,i) => `
     <div class="shotrow">
@@ -839,21 +1002,27 @@ function viewHole(){
       <button class="shotbtn del" data-act="delshot" data-i="${i}">&#10007;</button>
     </div>`).join("");
 
-  const hint = (sum != null && f.score == null)
-    ? `<div class="scorehint">shots + putts + penalties = <b>${sum}</b> &middot; <b><u data-act="setsum" style="cursor:pointer">tap to set score</u></b></div>`
-    : (sum != null && f.score != null && sum !== f.score)
-      ? `<div class="scorehint">heads up: shots + putts + pen = <b>${sum}</b>, score says <b>${f.score}</b></div>` : "";
+  // confirm-score button after putting; sets score to shots+putts+pen
+  const confirm = (sum != null)
+    ? (f.score == null
+        ? `<button class="confirmscore" data-act="setsum">Set score = <b>${sum}</b> (shots + putts + pen)</button>`
+        : (sum !== f.score
+            ? `<button class="confirmscore warn" data-act="setsum">Score says ${f.score}, shots add to <b>${sum}</b> — set ${sum}?</button>`
+            : `<div class="confirmok">Score ${f.score} confirmed &middot; matches your shots</div>`))
+    : "";
 
   const pinBadge = pins[h.n] ? " &middot;" : "";
   const teeChips = TEES.map(x =>
     `<button class="teechip ${teeFor(h.n)===x?"on":""} tee-${x}" data-teeov="${x}">${x.toUpperCase()} ${h.yds[x]}</button>`).join("");
   return `
+  ${holeNav("top", h)}
   <section class="holecard">
     <div class="holehead">
       <div class="holenum">No. ${h.n}</div>
       <div class="holemeta">PAR <b>${h.par}</b> &middot; HDCP <b>${h.si}</b><br><b>${holeYds(h)}</b> yds &middot; ${teeFor(h.n)}</div>
     </div>
     <div class="teeovrow">${teeChips}</div>
+
     <div class="scorerow">
       <div class="scorelbl">Score<span class="pm">${plusMinus(f.score, h.par) || "&mdash;"}</span></div>
       <div class="step">
@@ -862,6 +1031,7 @@ function viewHole(){
         <button class="stepbtn" data-act="inc" aria-label="increase score">+</button>
       </div>
     </div>
+
     <div class="statgrid">
       ${par3 ? "" : chip("fir","FIR")}
       ${chip("gir","GIR")}
@@ -870,6 +1040,14 @@ function viewHole(){
         <button class="stmini" data-act="peninc">+</button>
       </div>
     </div>
+
+    <div class="seclbl">Shots</div>
+    <div class="shots">
+      ${shotRows}
+      ${editing ? shotEditor() : `<button class="addshot" data-act="addshot">+ Add shot</button>`}
+    </div>
+
+    <div class="seclbl">Putting</div>
     <div class="puttrow">
       ${[1,2,3].map(i => `<div class="puttfield"><label>P${i} ft</label>
         <input type="number" inputmode="numeric" data-putt="${i}" value="${f["p"+i] ?? ""}"></div>`).join("")}
@@ -879,11 +1057,9 @@ function viewHole(){
         <button class="stmini" data-act="puttinc">+</button>
       </div>
     </div>
-    <div class="shots">
-      ${shotRows}
-      ${editing ? shotEditor() : `<button class="addshot" data-act="addshot">+ Add shot</button>`}
-      ${hint}
-    </div>
+
+    ${confirm ? `<div class="confirmrow">${confirm}</div>` : ""}
+
     <div class="noterow">
       <input type="text" id="holenote" placeholder="Hole note (optional)" value="${esc(f.note || "")}">
     </div>
@@ -900,6 +1076,30 @@ function viewHole(){
   </section>
   <section class="caddy">
     <div class="caddyhead">Caddy</div>
+    <div class="caddytabs">
+      <button class="caddytab ${caddyTab==="swing"?"on":""}" data-cad="swing">What do I swing?</button>
+      <button class="caddytab ${caddyTab==="dist"?"on":""}" data-cad="dist">My distances</button>
+      <button class="caddytab ${caddyTab==="wind"?"on":""}" data-cad="wind">Wind charts</button>
+    </div>
+    <div class="caddybody">${caddyBody()}</div>
+  </section>
+  ${holeNav("bottom", h)}`;
+}
+
+function holeNav(pos, h){
+  const prev = hole > 1 ? `<button class="navbtn" data-act="prev">&larr; No. ${hole-1}</button>`
+                        : `<span class="navbtn dis">Front</span>`;
+  const next = hole < 18 ? `<button class="navbtn" data-act="next">No. ${hole+1} &rarr;</button>`
+                         : `<span class="navbtn dis">Home</span>`;
+  return `<div class="holenav ${pos}">${prev}<div class="navnow">No. ${h.n}</div>${next}</div>`;
+}
+
+/* ---------- caddy sub-tabs ---------- */
+function caddyBody(){
+  if (caddyTab === "dist") return caddyDistChart();
+  if (caddyTab === "wind") return caddyWindChart();
+  // swing
+  return `
     <div class="edrow">
       <div class="edfield"><div class="edlbl">Distance (yd)</div>
         <input type="number" inputmode="numeric" id="cd-dist" value="${caddyIn.dist ?? ""}"></div>
@@ -914,12 +1114,29 @@ function viewHole(){
           `<option value="${w.id}"${caddyIn.dir===w.id?" selected":""}>${w.label}</option>`).join("")}</select></div>
     </div>
     <button class="caddyask" data-act="caddy">What do I swing?</button>
-    <div class="caddyout" id="caddyout">${caddyIn.out || ""}</div>
-  </section>
-  <div class="holenav">
-    <button class="navbtn" data-act="prev" ${hole===1?"disabled":""}>Prev</button>
-    <button class="navbtn" data-act="next" ${hole===18?"disabled":""}>Next hole</button>
-  </div>`;
+    <div class="caddyout" id="caddyout">${caddyIn.out || ""}</div>`;
+}
+function caddyDistChart(){
+  const rows = CLUBS.filter(c=>CADDY[c]).map(c =>
+    `<tr><td class="cl">${CLUB_EXPORT[c]||c}</td><td>${CADDY[c].c[0]}</td><td class="mut">${CADDY[c].c[1]}</td></tr>`).join("");
+  return `<table class="chart"><thead><tr><th>Club</th><th>Carry</th><th>Total</th></tr></thead><tbody>${rows}</tbody></table>
+    <div class="chartnote">Calm-air carry (total), yards. Your 2026 distances.</div>`;
+}
+function caddyWindChart(){
+  const key = windTab === "down" ? "t" : "h";
+  const rows = CLUBS.filter(c=>CADDY[c]).map(c => {
+    const s = CADDY[c], w = s[key];
+    return `<tr><td class="cl">${CLUB_EXPORT[c]||c}</td><td class="mut">${s.c[0]}</td>
+      <td>${w[0][0]}</td><td>${w[1][0]}</td><td>${w[2][0]}</td></tr>`;
+  }).join("");
+  return `<div class="windsub">
+      <button class="windbtn ${windTab==="into"?"on":""}" data-wind="into">Headwind</button>
+      <button class="windbtn ${windTab==="down"?"on":""}" data-wind="down">Tailwind</button>
+    </div>
+    <table class="chart"><thead><tr><th>Club</th><th>Calm</th><th>5</th><th>10</th><th>20</th></tr></thead>
+    <tbody>${rows}</tbody></table>
+    <div class="chartnote">Carry (yds) ${windTab==="down"?"straight downwind":"straight into"} at 5 / 10 / 20 mph.
+    Wind hurts ~1.5&times; as much as it helps. For crosswind aim, use "What do I swing?".</div>`;
 }
 
 function bookBody(){
@@ -939,10 +1156,12 @@ function bookBody(){
     const hint = p
       ? `<span class="pinlgnd">Flag</span> = today's pin<br><span class="tgtlgnd">Blue ring</span> = suggested target, fat side<br>Tap the green to move the pin`
       : `<b>Tap the green to drop today's pin</b>`;
+    const tip = p ? `<div class="pintip">${pinAdvice(hole)}</div>` : "";
     return `<div class="bookframe greentap" data-role="greentap">
         <img class="bookimg" src="${meta.green}" alt="Green map, hole ${hole}" draggable="false">
         ${pinSvg}${tgtDiv}
       </div>
+      ${tip}
       <div class="bookhint">${hint}</div>
       ${p ? `<button class="pinclear" data-act="pinclear">Clear pin</button>` : ""}`;
   }
@@ -983,7 +1202,7 @@ function viewOverview(){
     const yn = v => v==="Y" ? `<span class="ok">&#10003;</span>` : v==="N" ? `<span class="miss">&#10007;</span>` : "&middot;";
     return `<tr><td class="hn">${h.n}</td><td>${h.par}</td>
       <td class="sc${cls}">${f.score ?? "&middot;"}</td>
-      <td>${h.par===3 ? "&mdash;" : yn(f.fir)}</td><td>${yn(f.gir)}</td>
+      <td>${h.par===3 ? "&mdash;" : yn(effFir(h))}</td><td>${yn(effGir(h))}</td>
       <td>${puttCount(h.n) ?? "&middot;"}</td><td>${f.pen || "&middot;"}</td>
       <td>${SH(h.n).length || "&middot;"}</td></tr>`;
   }).join("");
@@ -1015,9 +1234,6 @@ function commitPutt(i, raw){
 
 function bind(){
   const h = HOLES[hole-1];
-  document.querySelectorAll("[data-tee]").forEach(el => {
-    el.onclick = () => { setCell("tee", el.dataset.tee); render(); };
-  });
   document.querySelectorAll("[data-act]").forEach(el => {
     el.onclick = () => {
       const act = el.dataset.act;
@@ -1085,9 +1301,20 @@ function bind(){
           alert("Need club, lie, result and a start distance."); return;
         }
         const arr = SH(hole).slice();
-        if (editing.idx === -1) arr.push({...d}); else arr[editing.idx] = {...d};
-        editing = null;
+        const wasNew = editing.idx === -1;
+        if (wasNew) arr.push({...d}); else arr[editing.idx] = {...d};
+        /* chain: if a new shot didn't finish on the green, auto-open the next
+           one prefilled from this finish — no second "Add shot" tap */
+        if (wasNew && d.da != null){
+          const nb = d.da;
+          editing = { idx:-1, draft:{ club: suggestClub(nb, false, h.par),
+            lie:null, db:nb, da:null, type:null, acc:null } };
+        } else {
+          editing = null;
+        }
         setShots(hole, arr);
+        const ed = document.querySelector(".editor");
+        if (ed) ed.scrollIntoView({block:"center"});
       }
       else if (act==="edcancel"){ editing = null; render(); }
       else if (act==="zoom"){ bookZoom = true; render(); }
@@ -1122,6 +1349,12 @@ function bind(){
   document.querySelectorAll("[data-view]").forEach(el => {
     el.onclick = () => { bookView = el.dataset.view; render(); };
   });
+  document.querySelectorAll("[data-cad]").forEach(el => {
+    el.onclick = () => { caddyTab = el.dataset.cad; render(); };
+  });
+  document.querySelectorAll("[data-wind]").forEach(el => {
+    el.onclick = () => { windTab = el.dataset.wind; render(); };
+  });
   document.querySelectorAll("[data-putt]").forEach(el => {
     el.onchange = () => commitPutt(+el.dataset.putt, el.value.trim());
   });
@@ -1146,6 +1379,10 @@ document.querySelectorAll(".tab").forEach(b => {
 
 /* ---------- boot ---------- */
 lsLoad();
+/* preload the green heatmaps so pin reads work on the Strategy tab too */
+for (let hn = 1; hn <= 18; hn++){
+  if (BOOK[hn]){ const im = new Image(); im.src = BOOK[hn].green; _greenImgCache["_img_"+hn] = im; }
+}
 const firstOpen = HOLES.find(h => F(h.n).score == null);
 hole = firstOpen ? firstOpen.n : 18;
 render();
