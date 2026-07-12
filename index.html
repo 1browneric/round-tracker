@@ -272,6 +272,7 @@ input,textarea,select{font-family:inherit}
 .chart td{padding:7px 4px;text-align:center;border-bottom:1px solid rgba(12,35,64,.1)}
 .chart td.cl{text-align:left;font-weight:700;color:#0C2340}
 .chart td.mut{color:#8792A4}
+.chart .par{color:#A31621;font-size:11px}
 .chartnote{font-family:var(--mono);font-size:10px;color:#5C6B82;line-height:1.6;padding:9px 2px 0;text-align:center}
 .windsub{display:flex;gap:6px;margin-bottom:10px}
 .windbtn{flex:1;padding:8px 4px;border-radius:8px;border:1.5px solid rgba(12,35,64,.2);
@@ -1127,13 +1128,14 @@ function caddyWindChart(){
     `<button class="windbtn ${windTab===id?"on":""}" data-wind="${id}">${lbl}</button>`).join("")}</div>`;
   let head, rows;
   if (windTab === "lr" || windTab === "rl"){
-    // crosswind: how far the ball ends off line (aim the OTHER way by that much)
+    // crosswind: carry holds ~calm, ball ends off line — carry (drift)
     const key = windTab === "lr" ? "xl" : "xr";
     head = `<th>Club</th><th>5</th><th>10</th><th>20</th>`;
     rows = CLUBS.filter(c=>CADDY[c]).map(c => {
-      const x = CADDY[c][key];
+      const s = CADDY[c], x = s[key], y = s.c[0];
+      const cell = i => `${y} <span class="par">(${drift(Math.round(x[i]))})</span>`;
       return `<tr><td class="cl">${CLUB_EXPORT[c]||c}</td>
-        <td>${drift(Math.round(x[0]))}</td><td>${drift(Math.round(x[1]))}</td><td>${drift(Math.round(x[2]))}</td></tr>`;
+        <td>${cell(0)}</td><td>${cell(1)}</td><td>${cell(2)}</td></tr>`;
     }).join("");
   } else {
     const key = windTab === "down" ? "t" : "h";
