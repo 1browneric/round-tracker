@@ -298,7 +298,7 @@ input,textarea,select{font-family:inherit}
     <h1 class="wordmark">Round <em>Tracker</em></h1>
     <div class="rule"></div>
     <div class="sub">Sunflower Hills &middot; Bonner Springs, KS</div>
-    <div class="sub">Saturday, July 12, 2026</div>
+    <div class="sub">Sunday, July 12, 2026</div>
   </header>
   <nav class="tabs" role="tablist">
     <button class="tab on" data-tab="hole" role="tab">Hole</button>
@@ -1074,9 +1074,9 @@ function viewHole(){
     <div class="bookbody">${bookBody()}</div>
   </section>
   <section class="caddy">
-    <div class="caddyhead">Caddy</div>
+    <div class="caddyhead">Caddie</div>
     <div class="caddytabs">
-      <button class="caddytab ${caddyTab==="swing"?"on":""}" data-cad="swing">What do I swing?</button>
+      <button class="caddytab ${caddyTab==="swing"?"on":""}" data-cad="swing">Swing Caddie</button>
       <button class="caddytab ${caddyTab==="dist"?"on":""}" data-cad="dist">My distances</button>
       <button class="caddytab ${caddyTab==="wind"?"on":""}" data-cad="wind">Wind charts</button>
     </div>
@@ -1112,30 +1112,39 @@ function caddyBody(){
         <select id="cd-dir">${WIND_DIRS.map(w =>
           `<option value="${w.id}"${caddyIn.dir===w.id?" selected":""}>${w.label}</option>`).join("")}</select></div>
     </div>
-    <button class="caddyask" data-act="caddy">What do I swing?</button>
+    <button class="caddyask" data-act="caddy">Swing Caddie</button>
     <div class="caddyout" id="caddyout">${caddyIn.out || ""}</div>`;
 }
 function caddyDistChart(){
   const rows = CLUBS.filter(c=>CADDY[c]).map(c =>
     `<tr><td class="cl">${CLUB_EXPORT[c]||c}</td><td>${CADDY[c].c[0]}</td><td class="mut">${CADDY[c].c[1]}</td></tr>`).join("");
-  return `<table class="chart"><thead><tr><th>Club</th><th>Carry</th><th>Total</th></tr></thead><tbody>${rows}</tbody></table>
-    <div class="chartnote">Calm-air carry (total), yards. Your 2026 distances.</div>`;
+  return `<table class="chart"><thead><tr><th>Club</th><th>Carry</th><th>Total</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
+const drift = n => n === 0 ? "&mdash;" : (n > 0 ? `${n}R` : `${-n}L`);
 function caddyWindChart(){
-  const key = windTab === "down" ? "t" : "h";
-  const rows = CLUBS.filter(c=>CADDY[c]).map(c => {
-    const s = CADDY[c], w = s[key];
-    return `<tr><td class="cl">${CLUB_EXPORT[c]||c}</td><td class="mut">${s.c[0]}</td>
-      <td>${w[0][0]}</td><td>${w[1][0]}</td><td>${w[2][0]}</td></tr>`;
-  }).join("");
-  return `<div class="windsub">
-      <button class="windbtn ${windTab==="into"?"on":""}" data-wind="into">Headwind</button>
-      <button class="windbtn ${windTab==="down"?"on":""}" data-wind="down">Tailwind</button>
-    </div>
-    <table class="chart"><thead><tr><th>Club</th><th>Calm</th><th>5</th><th>10</th><th>20</th></tr></thead>
-    <tbody>${rows}</tbody></table>
-    <div class="chartnote">Carry (yds) ${windTab==="down"?"straight downwind":"straight into"} at 5 / 10 / 20 mph.
-    Wind hurts ~1.5&times; as much as it helps. For crosswind aim, use "What do I swing?".</div>`;
+  const subs = [["into","Into"],["down","Down"],["lr","L&rarr;R"],["rl","R&rarr;L"]];
+  const bar = `<div class="windsub">${subs.map(([id,lbl]) =>
+    `<button class="windbtn ${windTab===id?"on":""}" data-wind="${id}">${lbl}</button>`).join("")}</div>`;
+  let head, rows;
+  if (windTab === "lr" || windTab === "rl"){
+    // crosswind: how far the ball ends off line (aim the OTHER way by that much)
+    const key = windTab === "lr" ? "xl" : "xr";
+    head = `<th>Club</th><th>5</th><th>10</th><th>20</th>`;
+    rows = CLUBS.filter(c=>CADDY[c]).map(c => {
+      const x = CADDY[c][key];
+      return `<tr><td class="cl">${CLUB_EXPORT[c]||c}</td>
+        <td>${drift(Math.round(x[0]))}</td><td>${drift(Math.round(x[1]))}</td><td>${drift(Math.round(x[2]))}</td></tr>`;
+    }).join("");
+  } else {
+    const key = windTab === "down" ? "t" : "h";
+    head = `<th>Club</th><th>Calm</th><th>5</th><th>10</th><th>20</th>`;
+    rows = CLUBS.filter(c=>CADDY[c]).map(c => {
+      const s = CADDY[c], w = s[key];
+      return `<tr><td class="cl">${CLUB_EXPORT[c]||c}</td><td class="mut">${s.c[0]}</td>
+        <td>${w[0][0]}</td><td>${w[1][0]}</td><td>${w[2][0]}</td></tr>`;
+    }).join("");
+  }
+  return `${bar}<table class="chart"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 function bookBody(){
